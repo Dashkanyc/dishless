@@ -1,0 +1,52 @@
+html, body {
+    height: 100%;
+}
+
+header {
+    height: 50px;
+    background: white;
+}
+section {
+    height: calc(100% - (50px + 75px));
+    background: white;
+}
+footer {
+    height: 75px;
+    background-color: white;
+}
+
+.wrap {
+    width: 100%;
+    overflow:auto;
+}
+
+.fleft {
+    float:left;
+    width: 49.5%;
+background:white;
+    height: 100%;
+}
+
+.fcenter{
+    float:left;
+    width: 0%;
+    background:white;
+    height:100%;
+    margin-left:0.25%;
+
+}
+
+.fright {
+float: right;
+    background:white;
+    height: 100%;
+    width: 49.5%;
+
+}
+
+.fsingle {
+    float:left;
+    width: 100%;
+background:white;
+    height: 100%;
+}

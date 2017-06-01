@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AWS Hierarchy View</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js/go.js"></script>
+    <link href="/css/goSamples.css" rel="stylesheet" type="text/css" />
+    <link href="/css/main.css" rel="stylesheet" type="text/css" />
+    <link href="/css/hierarchy.css" rel="stylesheet" type="text/css" />
+    <link href="/css/jqCloud.scss" rel="stylesheet" type="text/css" />
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.7.20.min.js"></script>
+    <script src="/js/jqCloud.js"></script>
+    <script src="/js/globalvariables.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/tagcanvas.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.4.2/sweetalert2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.0.5/es6-promise.auto.min.js"></script>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.4.2/sweetalert2.min.css' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+    <link rel='stylesheet' href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.45/css/bootstrap-datetimepicker.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.45/js/bootstrap-datetimepicker.min.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script>
+
+</script>
+<style>
+    .leftpane{
+    width: 50%;
+    height: 50px;
+    float: left;
+    border-collapse: collapse;
+}
+
+.middlepane{
+   width: 25%;
+   height: 50px;
+   float: left;
+   border-collapse: collapse;
+}
+
+.rightpane{
+    width: available;
+    height: 50px;
+    position: relative;
+    margin-left: 75%;
+    border-collapse: collapse;
+}
+</style>
+</head>
+<body onload="init();">
+<div id="menudiv" style="border: solid 0px black; width:100%; height:50px">
+    <div class="leftpane">
+        <img src="/images/region.svg" alt="Change Region" onclick="changeregion();" style="float:left;width:25px;height:25px;padding:5px;"  onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Change Region"/>
+        <img src="/images/calendar.svg" alt="Center" style="float:left;width:25px;height:25px;padding:5px;" onclick="choosetimerange()" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Set Time Range"/>
+        <img src="/images/filter.svg" alt="Center" style="float:left;width:25px;height:25px;padding:5px;" onclick="changefilters()" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Set Filters"/>
+        <img src="/images/slider.svg" alt="Center" style="float:left;width:25px;height:25px;padding:5px;" onclick="setdisplaylevel()" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Collapse/Expand Hierarchy"/>
+        <img src="/images/settings.svg" alt="Center" style="float:left;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)"title="Settings"/>
+        <img src="/images/camera.svg" alt="Center" style="float:left;width:25px;height:25px;padding:5px;" onclick="runsweep()" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Create Snapshot"/>
+        <a href="/tags.html"> <img src="/images/tags.svg" alt="Tags" style="float:left;width:25px;height:25px;padding:5px;"  onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Tags Management"/> </a>
+        <img src="/images/processmap.svg" alt="Process Map/Dependency" style="float:left;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Dependencies"/>
+        <img src="/images/appstore.svg" alt="Application Flow" style="float:left;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Application Flow"/>
+        <img src="/images/speed.svg" alt="Plus" style="float:left;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Set Animation Speed" onclick="setanimationspeed()" />
+        <img src="/images/previousfast.svg" alt="Play Back" style="float:left;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Play Back" onclick="playback()"/>
+        <img src="/images/previous.svg" alt="Previous" style="float:left;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Previous" onclick="previous()"/>
+        <img src="/images/next.svg" alt="Next" style="float:left;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Next" onclick="next()"/>
+        <img src="/images/nextfast.svg" alt="Play" style="float:left;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Play" onclick="play()"/>
+
+        <a href="/sankey.html"><img src="/images/sankey.jpg" alt="Sankey" style="float:left;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Sankey" /></a>
+        <a href="/map.html"><img src="/images/map.svg" alt="Map" style="float:left;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Map" /></a>
+        <img src="/images/ddos.png" alt="Denial of Service" style="float:left;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Distributed DoS Analysis" />
+        <img src="/images/disruption.jpg" alt="Disruption" style="float:left;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Service Disruption Analysis" />
+
+    </div>
+    <div class="middlepane">
+        <div class="leftpane" id="infoleftdiv">
+
+        </div>
+        <div class="middlepane" id="infomiddlediv">
+
+        </div>
+        <div class="rightpane" id="inforightdiv">
+
+        </div>
+    </div>
+    <div class="rightpane">
+        <img src="/images/plus.svg" alt="Plus" style="float:right;width:25px;height:25px;padding:5px;" onclick="myDiagram.scale = myDiagram.scale * 1.05;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Zoom Out"/>
+        <img src="/images/minus.svg" alt="Minus" style="float:right;width:25px;height:25px;padding:5px;" onclick="myDiagram.scale = myDiagram.scale * 0.95;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Zoom In"/>
+        <img src="/images/center.svg" alt="Center" style="float:right;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Center Diagram"/>
+        <img src="/images/up.svg" alt="Up" style="float:right;width:25px;height:25px;padding:5px;" onclick="" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Scroll Up"/>
+        <img src="/images/left.svg" alt="Left" style="float:right;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Scroll Left"/>
+        <img src="/images/right.svg" alt="Right" style="float:right;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Scroll Right"/>
+        <img src="/images/down.svg" alt="Down" style="float:right;width:25px;height:25px;padding:5px;" onmouseover="bigImg(this)" onmouseout="normalImg(this)" title="Scroll Down"/>
+    </div>
+
+
+</div>
+<div id="myDiagramDiv" style="border: solid 0px black; width:100%; height:520px"></div>
+<script>
+       google.charts.load('current', {'packages':['timeline']});
+
+</script>
+    <div id="timeline" style="border: solid 0px black; width:100%; height:100px">
+        <div id="chart_div"></div>
+    </div>
+
+</body>
