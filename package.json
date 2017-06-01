@@ -1,13 +1,13 @@
 {
-  "name": "awsinsight",
+  "name": "dishless",
   "version": "1.0.0",
-  "description": "",
+  "description": "Seamless clone but only cooler!!",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server"
   },
-  "author": "",
+  "author": "Dashaka NYC",
   "license": "ISC",
   "dependencies": {
     "async": "^2.1.4",
@@ -16,6 +16,7 @@
     "collections": "^5.0.6",
     "express": "^4.14.1",
     "geoip-lite": "^1.1.9",
+    "googleanalytics": "^0.3.7",
     "node-schedule": "^1.2.0",
     "range_check": "^1.4.0",
     "redis": "^2.6.5",
